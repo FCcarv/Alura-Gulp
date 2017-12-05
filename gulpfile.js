@@ -2,7 +2,8 @@ var gulp = require('gulp')
 ,imagemin = require('gulp-imagemin')
 ,clean = require('gulp-clean')
 ,concat = require('gulp-concat')
-,htmlReplace = require('gulp-html-replace');
+,htmlReplace = require('gulp-html-replace')
+,uglify = require('gulp-uglify');
 
 /*esta a tarefa que esta dando o start e faz com que todas as 3 buid-img, 
 buid-js*,buid-html e funciona juntas em paralelo**/
@@ -36,6 +37,7 @@ gulp.task('build-js', function() {
 
     gulp.src(['dist/js/jquery.js', 'dist/js/home.js','dist/js/produto.js'])
     .pipe(concat('all.js'))
+    .pipe(uglify()) //minifica o arquivo all.js antes de mandar pra pasta dist
     .pipe(gulp.dest('dist/js'));
 });
 

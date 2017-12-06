@@ -5,7 +5,9 @@ var gulp = require('gulp')
 ,htmlReplace = require('gulp-html-replace')
 ,uglify = require('gulp-uglify')
 ,usemin = require('gulp-usemin')
-,cssmin = require('gulp-cssmin');
+,cssmin = require('gulp-cssmin')
+,browserSync = require('browser-sync')
+,autoprefixer = require('gulp-autoprefixer');
 
 /*esta a tarefa que esta dando o start e faz com que todas as 3 buid-img, 
 buid-js*,buid-html e funciona juntas em paralelo**/
@@ -68,11 +70,25 @@ gulp.task('build-img', function() {
 indenticadas pelo comentario build:js e tbm arquivos css build:css */
 /*E ainda minifica os arquivos css e js*/
 gulp.task('usemin', function() {
-    
+   //SÓ P/ SABER:nessas chamadas abaixo de pluglins que rodam eM paralelo no js ou css poderia colocar mais algumas 
+   //na sequencia que o usemin aceitaria tranquilamente. 
     gulp.src('dist/**/*.html')
     	.pipe(usemin({
     		'js':[uglify],
-    		'css':[cssmin]
+    		'css':[autoprefixer, cssmin]
     	}))
     	.pipe(gulp.dest('dist'));
+
+});
+
+gulp.task('server', function() {
+    
+    browserSync.init({
+
+    	server:{
+    		baseDir:'src'
+    	}
+    	//localhost:3000  na url seria a raiz da pasta src.
+    });
+    gulp.watch('src/**/*').on('change', browserSync.reload);
 });
